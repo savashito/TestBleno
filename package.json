@@ -1,0 +1,14 @@
+{
+  "name": "testbleno",
+  "version": "1.0.0",
+  "description": "This is a test of bluetooth, simulates the RFarduino",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rodrigo Savage",
+  "license": "ISC",
+  "dependencies": {
+    "bleno": "^0.4.1"
+  }
+}
