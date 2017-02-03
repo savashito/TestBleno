@@ -1,7 +1,7 @@
 var bleno = require('bleno');
 
 
-var name = 'iRow erg RFduino';
+var name = 'iRow raspberry RFduino';
 var serviceUUID = '2220';
 var characteristicUUIDRead = '2221'
 var characteristicUUIDWrite = '2222'
