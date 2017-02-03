@@ -2,6 +2,25 @@ var bleno = require('bleno');
 
 
 var name = 'iRow raspberry RFduino';
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('ergData', function(data){
+    packageErgEntry(data)
+    console.log('message: ' , data);
+  });
+});
+
+http.listen(8080, function(){
+  console.log('listening on *:8080');
+});
+
+
+// var name = 'iRow erg RFduino';
 var serviceUUID = '2220';
 var characteristicUUIDRead = '2221'
 var characteristicUUIDWrite = '2222'
@@ -18,17 +37,12 @@ bleno.on('stateChange', function(state) {
 
 var data = new Buffer('Send me some data to display');
 
+/*
 // new characteristic added to the service
 var readCharacteristic = new bleno.Characteristic({
     uuid : characteristicUUIDRead,
     properties : ['read','write'], // ['read','writeWithoutResponse'],
-    /*onReadRequest : function(offset, callback) {
-        if(offset > data.length) {
-            callback(bleno.Characteristic.RESULT_INVALID_OFFSET);
-        } else {
-            callback(bleno.Characteristic.RESULT_SUCCESS, data.slice(offset));
-        }
-    },*/
+
     onReadRequest : function(newData, offset, withoutResponse, callback) {
     	console.log("onReadRequest",newData);
         if(offset > 0) {
@@ -52,7 +66,8 @@ var readCharacteristic = new bleno.Characteristic({
     onIndicate: function(){
         console.log("onIndicate");
     }
-})
+})*/
+
 var writeCharacteristic = new bleno.Characteristic({
     uuid : characteristicUUIDWrite,
     properties : ['write','read'], // ['read','writeWithoutResponse'],
@@ -61,7 +76,8 @@ var writeCharacteristic = new bleno.Characteristic({
             callback(bleno.Characteristic.RESULT_INVALID_OFFSET);
         } else {
             callback(bleno.Characteristic.RESULT_SUCCESS, data.slice(offset));
-        }
+        }  confidence intervarl make sure 95 % 
+        on case for one prior
     },*/
     onWriteRequest : function(newData, offset, withoutResponse, callback) {
     	console.log("onWriteRequest",newData);
@@ -75,7 +91,8 @@ var writeCharacteristic = new bleno.Characteristic({
     },
      onReadRequest : function(offset,callback){//newData, offset, withoutResponse, callback) {
     	console.log("onReadRequest ",offset," Sending 07");
-    	callback(bleno.Characteristic.RESULT_SUCCESS,07);
+        var data = Buffer.from([0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,0xFF, 0xFF])
+    	callback(bleno.Characteristic.RESULT_SUCCESS,data);
     },
     onSubscribe : function(maxValueSize, updateValueCallback) {
     	console.log("onSubscribe");
@@ -85,6 +102,7 @@ var writeCharacteristic = new bleno.Characteristic({
             });
         }, 1000);*/
     },
+    /*
      onUnsubscribe: function(){
         console.log("onUnsubscribe");
      }, // optional notify/indicate unsubscribe handler, function() { ...}
@@ -94,6 +112,7 @@ var writeCharacteristic = new bleno.Characteristic({
     onIndicate: function(){
         console.log("onIndicate");
     }
+    */
 })
 bleno.on('advertisingStart', function(error) {
 	console.log('on -> advertisingStart: ' + (error ? 'error ' + error : 'success'));
@@ -102,7 +121,7 @@ bleno.on('advertisingStart', function(error) {
 			new bleno.PrimaryService({
 				uuid : serviceUUID,
 				characteristics : [
-					readCharacteristic,
+					// readCharacteristic,
 					writeCharacteristic
 					// add characteristics here
 				]

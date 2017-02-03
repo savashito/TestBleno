@@ -9,6 +9,8 @@
   "author": "Rodrigo Savage",
   "license": "ISC",
   "dependencies": {
-    "bleno": "^0.4.1"
+    "bleno": "^0.4.1",
+    "express": "^4.14.1",
+    "socket.io": "^1.7.2"
   }
 }

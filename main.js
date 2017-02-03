@@ -1,16 +1,15 @@
-var bleno = require('../..');
+var bleno = require('bleno');
 
 var BlenoPrimaryService = bleno.PrimaryService;
 
-var EchoCharacteristic = require('./characteristic');
+var ErgTelemetryCharacteristic = require('./ergTelemetryCharacteristic');
 
-console.log('bleno - echo');
-
+console.log('ErgTelemetryService - echo');
+uuidService = '6969'
 bleno.on('stateChange', function(state) {
   console.log('on -> stateChange: ' + state);
-
   if (state === 'poweredOn') {
-    bleno.startAdvertising('echo', ['ec00']);
+    bleno.startAdvertising('ErgTelemetryService', [uuidService]);
   } else {
     bleno.stopAdvertising();
   }
@@ -18,13 +17,12 @@ bleno.on('stateChange', function(state) {
 
 bleno.on('advertisingStart', function(error) {
   console.log('on -> advertisingStart: ' + (error ? 'error ' + error : 'success'));
-
   if (!error) {
     bleno.setServices([
       new BlenoPrimaryService({
-        uuid: 'ec00',
+        uuid: uuidService,
         characteristics: [
-          new EchoCharacteristic()
+          new ErgTelemetryCharacteristic()
         ]
       })
     ]);
