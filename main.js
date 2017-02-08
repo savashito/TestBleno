@@ -6,6 +6,7 @@ var ErgTelemetryCharacteristic = require('./ergTelemetryCharacteristic');
 
 console.log('ErgTelemetryService');
 uuidService = '6969'
+//uuidService = '18902a9a-1f4a-44fe-936f-14c8eea41800';
 bleno.on('stateChange', function(state) {
   console.log('on -> stateChange: ' + state);
   if (state === 'poweredOn') {
